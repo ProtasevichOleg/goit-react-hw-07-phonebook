@@ -1,4 +1,3 @@
-// src/components/ContactListItem/ContactListItem.jsx
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/contacts';
 import PropTypes from 'prop-types';

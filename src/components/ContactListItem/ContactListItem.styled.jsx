@@ -1,4 +1,3 @@
-// src/components/ContactListItem/ContactListItem.styled.jsx
 import styled from 'styled-components';
 
 export const ContactItem = styled.li`

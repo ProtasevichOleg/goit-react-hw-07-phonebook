@@ -1,4 +1,3 @@
-// src/components/Titles/MainTitle/MainTitle.styled.jsx
 import styled from 'styled-components';
 
 export const StyledMainTitle = styled.h1`

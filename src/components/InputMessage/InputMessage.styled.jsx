@@ -1,4 +1,3 @@
-// src/components/InputMessage/InputMessage.styled.jsx
 import styled, { css } from 'styled-components';
 
 export const Message = styled.p`

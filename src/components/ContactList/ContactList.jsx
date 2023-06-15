@@ -1,4 +1,3 @@
-// src/components/ContactList/ContactList.jsx
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import {
@@ -26,8 +25,6 @@ const ContactList = () => {
       {!filteredContacts?.length && !error && !isLoading && (
         <p>No contacts found.</p>
       )}
-
-      {/* {isLoading && <p>Loading...</p>} */}
 
       <List>
         {filteredContacts.map(({ id, name, number }) => (

@@ -1,4 +1,3 @@
-// src/components/Titles/SubTitle/SubTitle.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyledSubTitle } from './SubTitle.styled';

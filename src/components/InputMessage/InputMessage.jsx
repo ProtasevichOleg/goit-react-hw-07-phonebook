@@ -1,4 +1,3 @@
-// src/components/InputMessage/InputMessage.jsx
 import PropTypes from 'prop-types';
 import { Message } from './InputMessage.styled';
 

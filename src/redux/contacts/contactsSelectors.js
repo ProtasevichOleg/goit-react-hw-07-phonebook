@@ -1,4 +1,3 @@
-// src/redux/phonebook/phonebookSelectors.js
 import { createSelector } from '@reduxjs/toolkit';
 
 const selectContacts = state => state.contacts.items;

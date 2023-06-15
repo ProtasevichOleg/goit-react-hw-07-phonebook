@@ -1,4 +1,3 @@
-// src/components/ContactForm/ContactForm.styled.jsx
 import styled from 'styled-components';
 
 export const Form = styled.form`

@@ -1,4 +1,3 @@
-// src/components/ContactForm/ContactForm.jsx
 import { useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact, selectContacts } from 'redux/contacts';
@@ -162,10 +161,6 @@ const ContactForm = () => {
 
       <SubmitButton
         type="submit"
-        disabled={
-          nameFieldNotification?.type === 'error' ||
-          numberFieldNotification?.type === 'error'
-        }
       >
         Add contact
       </SubmitButton>

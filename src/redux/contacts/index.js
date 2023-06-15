@@ -1,4 +1,3 @@
-// src/redux/phonebook/index.js
 export {
   selectContacts,
   selectFilter,

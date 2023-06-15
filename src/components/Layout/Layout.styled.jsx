@@ -1,4 +1,3 @@
-// src/Layout/Layout.styled.jsx
 import styled from 'styled-components';
 
 export const Container = styled.div`

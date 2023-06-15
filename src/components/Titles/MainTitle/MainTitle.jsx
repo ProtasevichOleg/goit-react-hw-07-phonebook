@@ -1,4 +1,3 @@
-// src/components/Titles/MainTitle/MainTitle.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyledMainTitle } from './MainTitle.styled';
