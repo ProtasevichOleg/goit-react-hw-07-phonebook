@@ -1,3 +1,4 @@
+// src/Layout/Layout.styled.jsx
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -24,7 +25,8 @@ export const Nav = styled.nav`
 export const Main = styled.main`
   flex-grow: 1;
   padding: 20px;
-  width: 1200px;
+  min-width: 320px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 `;

@@ -1,7 +1,13 @@
+// src/components/ContactListItem/ContactListItem.jsx
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/phonebookSlice';
+import { deleteContact } from 'redux/contacts';
 import PropTypes from 'prop-types';
-import { Item, DeleteButton } from './ContactListItem.styled';
+import {
+  ContactItem,
+  ContactInfoList,
+  ContactInfoItem,
+  DeleteButton,
+} from './ContactListItem.styled';
 
 const ContactListItem = ({ name, number, id }) => {
   const dispatch = useDispatch();
@@ -11,12 +17,13 @@ const ContactListItem = ({ name, number, id }) => {
   };
 
   return (
-    <Item>
-      <p>
-        {name}: {number}
-      </p>
+    <ContactItem>
+      <ContactInfoList>
+        <ContactInfoItem className="name">{name}</ContactInfoItem>
+        <ContactInfoItem>{number}</ContactInfoItem>
+      </ContactInfoList>
       <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
-    </Item>
+    </ContactItem>
   );
 };
 

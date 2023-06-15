@@ -1,15 +1,20 @@
+// src/components/ContactForm/ContactForm.styled.jsx
 import styled from 'styled-components';
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 150px;
+  min-width: 250px;
   margin-bottom: 20px;
 `;
 
 export const Label = styled.label`
-  margin-bottom: 10px;
   color: ${({ theme }) => theme.colors.label};
+`;
+
+export const MessageContainer = styled.div`
+  min-height: 20px;
+  margin-bottom: 10px;
 `;
 
 export const Span = styled.span`
@@ -23,6 +28,9 @@ export const Input = styled.input`
   padding: 5px;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.inputBorder};
+  border: ${({ error }) => error && '2px solid red'};
+  border: ${({ warning }) => warning && '2px solid orange'};
+  border: ${({ success }) => success && '2px solid green'};
   width: 100%;
   box-sizing: border-box;
 `;

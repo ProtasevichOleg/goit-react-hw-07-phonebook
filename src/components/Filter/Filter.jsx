@@ -1,5 +1,6 @@
+// src/components/Filter/Filter.jsx
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from 'redux/filterSlice';
+import { setFilter } from 'redux/filter';
 import { nanoid } from 'nanoid';
 import { FilterInput, FilterLabel } from './Filter.styled';
 

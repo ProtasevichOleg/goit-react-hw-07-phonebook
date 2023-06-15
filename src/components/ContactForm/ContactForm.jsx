@@ -1,61 +1,108 @@
-import { useState } from 'react';
+// src/components/ContactForm/ContactForm.jsx
+import { useState, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/phonebookSlice';
+import { addContact, selectContacts } from 'redux/contacts';
 import { nanoid } from 'nanoid';
-import { Form, Label, Input, Span, SubmitButton } from './ContactForm.styled';
+import {
+  Form,
+  Label,
+  MessageContainer,
+  Input,
+  Span,
+  SubmitButton,
+} from './ContactForm.styled';
 import {
   nameValidationMessage,
   numberValidationMessage,
 } from 'assets/validationMessages';
+import InputMessage from 'components/InputMessage';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.phonebook.contacts);
+  const contacts = useSelector(selectContacts);
 
+  const [nameFieldNotification, setNameFieldNotification] = useState(null);
+  const [numberFieldNotification, setNumberFieldNotification] = useState(null);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleChange = event => {
-    const { name, value } = event.target;
-    name === 'name' ? setName(value) : setNumber(value);
+  const nameInputId = useRef(nanoid());
+  const numberInputId = useRef(nanoid());
+
+  const validatePhoneNumber = phoneNumber => {
+    const phoneNumberRegex = new RegExp('^\\+?[0-9\\s\\-\\(\\)]+$');
+    return phoneNumberRegex.test(phoneNumber);
   };
 
-  const resetState = () => {
-    setName('');
-    setNumber('');
-  };
+  const handleBlur = useMemo(
+    () => (fieldName, fieldValue, setNotification) => {
+      const trimmedValue = fieldValue.trim();
 
-  const valueExists = (key, value) => {
-    if (key === 'name') {
-      const normalizedValue = value.toLowerCase();
-      return contacts.find(
-        contact => contact[key].toLowerCase() === normalizedValue
+      if (trimmedValue === '') {
+        setNotification({
+          type: 'warning',
+          message: `${fieldName} field can't be empty.`,
+        });
+        return;
+      }
+
+      if (fieldName === 'Number' && !validatePhoneNumber(trimmedValue)) {
+        setNotification({
+          type: 'error',
+          message: `Phone number is not valid.`,
+        });
+        return;
+      }
+
+      const isExist = contacts.find(
+        contact => contact[fieldName.toLowerCase()] === trimmedValue
       );
-    }
 
-    return contacts.find(contact => contact[key] === value);
-  };
+      if (isExist) {
+        setNotification({
+          type: 'error',
+          message: `${fieldName} "${trimmedValue}" is already exists.`,
+        });
+      } else {
+        setNotification({
+          type: 'success',
+          message: `${fieldName} "${trimmedValue}" is available.`,
+        });
+      }
+    },
+    [contacts]
+  );
+
+  const handleNameBlur = () =>
+    handleBlur('Name', name, setNameFieldNotification);
+
+  const handleNumberBlur = () =>
+    handleBlur('Number', number, setNumberFieldNotification);
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (valueExists('name', name)) {
-      alert(`${name} вже є в контактах.`);
+
+    const isNameExist = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    const isNumberExist = contacts.find(contact => contact.number === number);
+
+    if (isNameExist || isNumberExist) {
       return;
     }
 
-    if (valueExists('number', number)) {
-      alert(`Номер ${number} вже використовується.`);
-      return;
-    }
-
-    const newContact = {
-      name,
-      number,
+    const contact = {
       id: nanoid(),
+      name: name,
+      number: number,
     };
 
-    dispatch(addContact(newContact));
-    resetState();
+    dispatch(addContact(contact));
+    setName('');
+    setNumber('');
+    setNameFieldNotification(null);
+    setNumberFieldNotification(null);
   };
 
   return (
@@ -65,26 +112,63 @@ const ContactForm = () => {
         <Input
           type="text"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title={nameValidationMessage}
           value={name}
-          onChange={handleChange}
+          onChange={e => setName(e.target.value)}
+          onBlur={handleNameBlur}
+          title={nameValidationMessage}
+          id={nameInputId.current}
+          error={nameFieldNotification?.type === 'error'}
+          warning={nameFieldNotification?.type === 'warning'}
+          success={nameFieldNotification?.type === 'success'}
           required
         />
       </Label>
+
+      <MessageContainer>
+        {nameFieldNotification && (
+          <InputMessage
+            type={nameFieldNotification.type}
+            message={nameFieldNotification.message}
+          />
+        )}
+      </MessageContainer>
+
       <Label>
         <Span>Number</Span>
         <Input
           type="tel"
           name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title={numberValidationMessage}
           value={number}
-          onChange={handleChange}
+          onChange={e => setNumber(e.target.value)}
+          onBlur={handleNumberBlur}
+          pattern="\+?[0-9\s\-\(\)]+"
+          title={numberValidationMessage}
+          id={numberInputId.current}
+          error={numberFieldNotification?.type === 'error'}
+          warning={numberFieldNotification?.type === 'warning'}
+          success={numberFieldNotification?.type === 'success'}
           required
         />
       </Label>
-      <SubmitButton type="submit">Add contact</SubmitButton>
+
+      <MessageContainer>
+        {numberFieldNotification && (
+          <InputMessage
+            type={numberFieldNotification.type}
+            message={numberFieldNotification.message}
+          />
+        )}
+      </MessageContainer>
+
+      <SubmitButton
+        type="submit"
+        disabled={
+          nameFieldNotification?.type === 'error' ||
+          numberFieldNotification?.type === 'error'
+        }
+      >
+        Add contact
+      </SubmitButton>
     </Form>
   );
 };

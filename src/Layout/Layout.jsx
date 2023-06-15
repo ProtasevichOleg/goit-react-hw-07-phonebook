@@ -1,3 +1,4 @@
+// src/Layout/Layout.jsx
 import {
   Container,
   Header,
@@ -6,11 +7,13 @@ import {
   Footer,
   Copyright,
 } from './Layout.styled';
+import Spinner from 'components/Spinner';
 
 const Layout = ({ children }) => {
   return (
     <Container>
       <Header>
+        <Spinner />
         <Nav>PHONEBOOK</Nav>
       </Header>
       <Main>{children}</Main>
